@@ -1,8 +1,8 @@
 ﻿
 public static class GameConstants 
 {
-    public const int movement_delta = 1;
-    public const double max_velocity = 1.0;
+    public const float velocity_delta = 0.1f;
 
-    public const float time_step = 0;
+    public const double gravity = 0.5;
+
 }
