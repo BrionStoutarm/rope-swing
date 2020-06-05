@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     private float cur_horzVelocity; // -1 to 1
     private float cur_vertVelocity; // -1 to 1
 
-    private const float max_speed = 1.0f;
+    private const float max_speed = 0.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +20,8 @@ public class Player : MonoBehaviour
     void Update()
     {
         GetPlayerInput();
-        GetWorldInput();
+        //GetWorldInput();
+
         Vector2 nextPos = transform.position;
         nextPos.x += cur_horzVelocity;
         nextPos.y += cur_vertVelocity;
@@ -40,6 +41,12 @@ public class Player : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
         {
             cur_horzVelocity += GameConstants.velocity_delta;
+        }
+
+        //jump
+        else if (Input.GetKey(KeyCode.Space))
+        {
+            cur_vertVelocity += GameConstants.jump_value;
         }
 
         //slow down
