@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     private float cur_horzVelocity; // -1 to 1
     private float cur_vertVelocity; // -1 to 1
 
-    private const float max_speed = 0.5f;
+    private const float max_speed = 2.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +41,18 @@ public class Player : MonoBehaviour
         is_grounded = false;
     }
 
+    public void ClampHorizontalVelocity()
+    {
+        if (cur_horzVelocity > max_speed)
+        {
+            cur_horzVelocity = max_speed;
+        }
+        else if (cur_horzVelocity < -max_speed)
+        {
+            cur_horzVelocity = -max_speed;
+        }
+    }
+
     void GetPlayerInput()
     {
 
@@ -55,27 +67,29 @@ public class Player : MonoBehaviour
         {
             cur_horzVelocity += GameConstants.velocity_delta;
         }
-
-        //jump
-        else if (Input.GetKey(KeyCode.Space))
-        {
-            if(is_grounded)
-                cur_vertVelocity += GameConstants.jump_value;
-        }
-
         //slow down
         else
         {
-            if(cur_horzVelocity < 0f)
+            if (cur_horzVelocity < 0f)
             {
                 cur_horzVelocity += GameConstants.velocity_delta;
             }
-            else if(cur_horzVelocity > 0f)
+            else if (cur_horzVelocity > 0f)
             {
                 cur_horzVelocity -= GameConstants.velocity_delta;
 
             }
         }
+
+        //jump
+        if (Input.GetKey(KeyCode.Space))
+        {
+            if(is_grounded)
+                cur_vertVelocity += GameConstants.jump_value;
+        }
+
+        ClampHorizontalVelocity();
+
     }
 
     void GetWorldInput()
