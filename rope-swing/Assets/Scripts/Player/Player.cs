@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private bool is_grounded;
     private float cur_horzVelocity; // -1 to 1
     private float cur_vertVelocity; // -1 to 1
 
@@ -12,6 +13,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        is_grounded = true;
         cur_horzVelocity = 0;
         cur_vertVelocity = 0;
     }
@@ -26,6 +28,17 @@ public class Player : MonoBehaviour
         nextPos.x += cur_horzVelocity;
         nextPos.y += cur_vertVelocity;
         transform.position = Vector2.Lerp(transform.position, nextPos, 1.0f * Time.fixedDeltaTime);
+    }
+
+    public void FeetEnter()
+    {
+        is_grounded = true;
+        cur_vertVelocity = 0;
+    }
+
+    public void FeetExit()
+    {
+        is_grounded = false;
     }
 
     void GetPlayerInput()
@@ -46,7 +59,8 @@ public class Player : MonoBehaviour
         //jump
         else if (Input.GetKey(KeyCode.Space))
         {
-            cur_vertVelocity += GameConstants.jump_value;
+            if(is_grounded)
+                cur_vertVelocity += GameConstants.jump_value;
         }
 
         //slow down
@@ -66,8 +80,11 @@ public class Player : MonoBehaviour
 
     void GetWorldInput()
     {
-        //if not on platform or hanging from rope
-        cur_vertVelocity -=  GameConstants.velocity_delta;
+        if (!is_grounded)
+        {
+            //if not on platform or hanging from rope
+            cur_vertVelocity -= GameConstants.velocity_delta;
+        }
     }
 
 }
