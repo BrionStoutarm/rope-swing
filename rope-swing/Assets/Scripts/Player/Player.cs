@@ -1,16 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
     private bool is_grounded;
     private bool is_climbing;
     private bool could_climb;
+    private bool rope_shot;
 
-    private const float max_speed = 2.0f;
+    private const double max_rope_length = 10.0;
+    private const float max_speed = 5.0f;
 
     private Rigidbody2D spriteRigidBody;
+    private double cur_rope_length;
+
+    public Rope m_rope; 
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +24,8 @@ public class Player : MonoBehaviour
         is_grounded = true;
         is_climbing = false;
         could_climb = false;
+        rope_shot = false;
+        cur_rope_length = 0;
         spriteRigidBody = GetComponentInChildren<Rigidbody2D>();
     }
 
@@ -110,6 +118,29 @@ public class Player : MonoBehaviour
             }
         }
         
+        //shoot rope
+        if(Input.GetMouseButtonDown(0))
+        {
+            rope_shot = true;
+            Debug.Log("Shoot rope");
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mp = new Vector2(mousePos.x, mousePos.y);
+
+            Debug.DrawLine(spriteRigidBody.position, mousePos, Color.red, 2.0f);
+
+            m_rope.Shoot(mp);
+        }
+        //rope is shot and extending
+        if(rope_shot && Input.GetMouseButton(0) && cur_rope_length < max_rope_length)
+        {
+            Debug.Log("Rope is shooting");
+        }
+        //cancel rope shot
+        else if( (rope_shot && Input.GetMouseButtonUp(0)) || cur_rope_length > max_rope_length)
+        {
+            Debug.Log("Rope canceled");
+            rope_shot = false;
+        }
 
         //move left
         if(Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
@@ -155,11 +186,6 @@ public class Player : MonoBehaviour
 
         ClampHorizontalVelocity();
 
-    }
-
-    void GetWorldInput()
-    {
-       
     }
 
 }
