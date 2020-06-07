@@ -81,6 +81,38 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void SlowVerticalVelocity()
+    {
+        if (Mathf.Abs(spriteRigidBody.velocity.x) < GameConstants.velocity_delta){
+            spriteRigidBody.velocity = new Vector2(spriteRigidBody.velocity.x, 0f);
+        }
+        else if (spriteRigidBody.velocity.y < 0f)
+        {
+            spriteRigidBody.velocity = new Vector2(spriteRigidBody.velocity.x, spriteRigidBody.velocity.y + GameConstants.velocity_delta);
+        }
+        else if (spriteRigidBody.velocity.y > 0f)
+        {
+            spriteRigidBody.velocity = new Vector2(spriteRigidBody.velocity.x, spriteRigidBody.velocity.y - GameConstants.velocity_delta);
+
+        }
+    }
+
+    private void SlowHorizontalVelocity()
+    {
+        if (Mathf.Abs(spriteRigidBody.velocity.x) < GameConstants.velocity_delta){
+            spriteRigidBody.velocity = new Vector2(0f, spriteRigidBody.velocity.y);
+        }
+        else if (spriteRigidBody.velocity.x < 0f)
+        {
+            spriteRigidBody.velocity = new Vector2(spriteRigidBody.velocity.x + GameConstants.velocity_delta, spriteRigidBody.velocity.y);
+        }
+        else if (spriteRigidBody.velocity.x > 0f)
+        {
+            spriteRigidBody.velocity = new Vector2(spriteRigidBody.velocity.x - GameConstants.velocity_delta, spriteRigidBody.velocity.y);
+
+        }
+    }
+
     void GetPlayerInput()
     {
 
@@ -97,15 +129,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                if (spriteRigidBody.velocity.y < 0f)
-                {
-                    spriteRigidBody.velocity = new Vector2(spriteRigidBody.velocity.x, spriteRigidBody.velocity.y + GameConstants.velocity_delta);
-                }
-                else if (spriteRigidBody.velocity.y > 0f)
-                {
-                    spriteRigidBody.velocity = new Vector2(spriteRigidBody.velocity.x, spriteRigidBody.velocity.y - GameConstants.velocity_delta);
-
-                }
+                SlowVerticalVelocity();
             }
         }
         else if (could_climb)
@@ -156,15 +180,7 @@ public class Player : MonoBehaviour
         //slow down
         else
         {
-            if (spriteRigidBody.velocity.x < 0f)
-            {
-                spriteRigidBody.velocity = new Vector2(spriteRigidBody.velocity.x + GameConstants.velocity_delta, spriteRigidBody.velocity.y);
-            }
-            else if (spriteRigidBody.velocity.x > 0f)
-            {
-                spriteRigidBody.velocity = new Vector2(spriteRigidBody.velocity.x - GameConstants.velocity_delta, spriteRigidBody.velocity.y);
-
-            }
+            SlowHorizontalVelocity();
         }
 
         //jump
