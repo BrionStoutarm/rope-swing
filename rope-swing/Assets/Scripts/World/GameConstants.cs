@@ -5,4 +5,5 @@ public static class GameConstants
     public const float jump_value = 4.0f;
     public const double gravity = 0.5;
 
+    public const float rope_shoot_speed = 5.0f;
 }

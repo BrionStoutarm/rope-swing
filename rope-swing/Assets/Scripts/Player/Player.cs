@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D spriteRigidBody;
     private double cur_rope_length;
 
-    public Rope m_rope; 
+    public Rigidbody2D m_rope; 
 
     // Start is called before the first frame update
     void Start()
@@ -150,10 +150,12 @@ public class Player : MonoBehaviour
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 mp = new Vector2(mousePos.x, mousePos.y);
 
-            Debug.DrawLine(spriteRigidBody.position, mousePos, Color.red, 2.0f);
-
-            m_rope.Shoot(mp);
+            //Debug.DrawLine(spriteRigidBody.position, mousePos, Color.red, 2.0f);
+            Instantiate(m_rope, spriteRigidBody.transform.position, Quaternion.identity);
+            m_rope.velocity = transform.forward * GameConstants.rope_shoot_speed;
+            //m_rope.Shoot(mp, ref spriteRigidBody);
         }
+
         //rope is shot and extending
         if(rope_shot && Input.GetMouseButton(0) && cur_rope_length < max_rope_length)
         {
@@ -164,6 +166,7 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Rope canceled");
             rope_shot = false;
+            Destroy(m_rope);
         }
 
         //move left
