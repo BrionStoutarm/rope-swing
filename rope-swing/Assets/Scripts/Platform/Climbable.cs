@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class climbable : MonoBehaviour
+public class Climbable : MonoBehaviour
 {
     public Player m_player;
     // Start is called before the first frame update

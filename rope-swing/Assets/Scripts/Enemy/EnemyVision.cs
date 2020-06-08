@@ -62,8 +62,8 @@ public class EnemyVision : MonoBehaviour
         {
             m_target = null;
             if (!m_localLostSight)
-            {
-                m_enemy.LostSight();
+            { 
+                           m_enemy.LostSight();
             }
         }
     }
