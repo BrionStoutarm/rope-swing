@@ -18,11 +18,16 @@ public class Rope : MonoBehaviour
         
     }
 
-    public void Shoot(Vector2 tgt, ref Rigidbody2D player)
+    public void Shoot(Vector2 tgt)
     {
         //create head segment and shoot towards tgt
         //Debug.DrawLine(spriteRigidBody.position, mousePos, Color.red, 2.0f);
         
 
+    }
+
+    public void SetPlayer(Player p)
+    {
+        m_player = p;
     }
 }

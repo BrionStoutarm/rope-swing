@@ -16,8 +16,8 @@ public class Player : MonoBehaviour
     private Rigidbody2D spriteRigidBody;
     private double cur_rope_length;
 
-    public Rigidbody2D m_rope; 
-
+    public Rope m_rope;
+    private Rope ropeGameObject;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
         rope_shot = false;
         cur_rope_length = 0;
         spriteRigidBody = GetComponentInChildren<Rigidbody2D>();
+        ropeGameObject = null;
     }
 
     // Update is called once per frame
@@ -149,24 +150,25 @@ public class Player : MonoBehaviour
             Debug.Log("Shoot rope");
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 mp = new Vector2(mousePos.x, mousePos.y);
+            Vector2 playerPos = new Vector2(spriteRigidBody.position.x, spriteRigidBody.position.y);
+            Vector2 throwVector = mp - playerPos;
+            Debug.DrawLine(spriteRigidBody.position, mousePos, Color.red, 2.0f);
 
-            //Debug.DrawLine(spriteRigidBody.position, mousePos, Color.red, 2.0f);
-            Instantiate(m_rope, spriteRigidBody.transform.position, Quaternion.identity);
-            m_rope.velocity = transform.forward * GameConstants.rope_shoot_speed;
-            //m_rope.Shoot(mp, ref spriteRigidBody);
+            ropeGameObject = Instantiate(m_rope, GetRopeSpawn(mp), transform.rotation);
+            Debug.Log("ROPE POS: " + ropeGameObject.transform.position);
         }
 
         //rope is shot and extending
         if(rope_shot && Input.GetMouseButton(0) && cur_rope_length < max_rope_length)
         {
-            Debug.Log("Rope is shooting");
+            //Debug.Log("Rope is shooting");
         }
         //cancel rope shot
         else if( (rope_shot && Input.GetMouseButtonUp(0)) || cur_rope_length > max_rope_length)
         {
             Debug.Log("Rope canceled");
             rope_shot = false;
-            Destroy(m_rope);
+            Destroy(ropeGameObject.gameObject);
         }
 
         //move left
@@ -204,7 +206,16 @@ public class Player : MonoBehaviour
         }
 
         ClampHorizontalVelocity();
+    }
 
+    //will be where the player hand is
+    //    hand will be within a certain radius of the player_sprite
+    private Vector2 GetRopeSpawn(Vector2 mousePos)
+    {
+        Vector2 ret = mousePos;
+        //ret.Normalize();
+        Debug.Log(ret);
+        return ret;
     }
 
 }
