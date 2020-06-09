@@ -14,22 +14,18 @@ public class PlayerHand : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        faceMouse();
+        FaceMouse();
     }
 
-    private void faceMouse()
+    private void FaceMouse()
     {
         Vector3 mp = Input.mousePosition;
         mp = Camera.main.ScreenToWorldPoint(mp);
 
-        Vector2 mousePos = new Vector2(
-            mp.x - transform.position.x,
-            mp.y - transform.position.y
-        );
-
+        Vector2 mousePos = new Vector2(mp.x, mp.y);
 
         Vector2 playerPos = player_sprite.transform.localPosition;
-        float distance = Vector2.Distance(mousePos, playerPos);
+        float distance = Vector2.Distance(playerPos, mousePos);
 
         if(distance > GameConstants.player_hand_radius)
         {
